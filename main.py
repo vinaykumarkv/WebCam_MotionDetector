@@ -4,6 +4,7 @@ import cv2
 import time
 
 import emailer
+from threading import Thread
 
 video = cv2.VideoCapture(0)
 time.sleep(1)
@@ -47,7 +48,15 @@ while True:
     print(status_list)
     if status_list[0] == 1 and status_list[1] == 0:
         index = int(len(all_images) / 2)
-        emailer.send_email(all_images[index])
+        email_thread = Thread(target=emailer.send_email, args=(all_images[index],))
+        email_thread.daemon = True
+        clean_thread = Thread(target=emailer.clean_folder)
+        clean_thread.daemon = True
+
+        email_thread.start()
+        clean_thread.start()
+        count = 0
+
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1)
 

@@ -6,8 +6,7 @@ from email import encoders
 import os
 from dotenv import load_dotenv
 from datetime import datetime
-
-
+import subprocess
 
 load_dotenv()
 sender = os.getenv("sender")
@@ -57,3 +56,16 @@ def send_email(file_path="motion.png", sender=sender, to=receiver, subject="Moti
         server.sendmail(sender, to, message.as_string())
 
     print("Email with attachment sent!")
+
+def clean_folder(folder_path="images"):
+    # For Windows: Use 'del' for files and 'rd' for subfolders
+    if os.name == 'nt':
+        # /q is quiet mode, /s deletes from subfolders
+        subprocess.run(f'del /f /s /q "{folder_path}\\*.*"', shell=True)
+        subprocess.run(f'for /d %i in ("{folder_path}\\*") do rd /s /q "%i"', shell=True)
+    # For Mac/Linux: Use 'rm -rf'
+    else:
+        subprocess.run(f'rm -rf {folder_path}/*', shell=True)
+
+
+
