@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime
 import subprocess
-
+import time
 load_dotenv()
 sender = os.getenv("sender")
 receiver = os.getenv("receiver")
@@ -59,6 +59,7 @@ def send_email(file_path="motion.png", sender=sender, to=receiver, subject="Moti
 
 def clean_folder(folder_path="images"):
     # For Windows: Use 'del' for files and 'rd' for subfolders
+    time.sleep(1)
     if os.name == 'nt':
         # /q is quiet mode, /s deletes from subfolders
         subprocess.run(f'del /f /s /q "{folder_path}\\*.*"', shell=True)

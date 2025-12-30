@@ -54,6 +54,7 @@ while True:
         clean_thread.daemon = True
 
         email_thread.start()
+        time.sleep(1)
         clean_thread.start()
         count = 0
 
